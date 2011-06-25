@@ -44,6 +44,8 @@ module SpecHelper
   end
 end
 
+Dir[Rails.root.join("spec/**/*_behavior.rb")].each {|f| require f}
+
 RSpec.configure do |config|
   config.include SpecHelper
 end
