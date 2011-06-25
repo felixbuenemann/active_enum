@@ -1,12 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-class TestMemoryStoreEnum < ActiveEnum::Base; end
+class TestStoreEnum < ActiveEnum::Base; end
 class TestOtherAREnum < ActiveEnum::Base; end
 
 shared_examples_for 'a store' do
-  let(:store) { described_class.new(TestMemoryStoreEnum, @order) }
-  let(:alt_store) { described_class.new(TestOtherAREnum, :asc) }
-
   describe '#set' do
     it 'should store value of id and name' do
       store.set 1, 'test name'
