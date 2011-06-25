@@ -1,6 +1,7 @@
 module ActiveEnum
   module Storage
     autoload :MemoryStore, "active_enum/storage/memory_store"
+    autoload :I18nMemoryStore, "active_enum/storage/i18n_memory_store"
 
     class NotImplemented < StandardError; end
 
