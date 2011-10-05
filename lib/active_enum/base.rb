@@ -85,7 +85,11 @@ module ActiveEnum
       protected
 
       def i18n_scope
-        [:active_enum, self.name.underscore.gsub(/\//, '.')]
+        unless self.name.blank?
+          [:active_enum, self.name.underscore.gsub(/\//, '.')]
+        else
+          [:active_enum]
+        end
       end
 
       private
