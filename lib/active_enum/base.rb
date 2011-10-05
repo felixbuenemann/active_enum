@@ -23,9 +23,13 @@ module ActiveEnum
       end
 
       # Specify order enum values are returned. 
-      # Allowed values are :asc, :desc or :as_defined
+      # Allowed values are :asc, :desc or :natural
       #
       def order(order)
+        if order == :as_defined
+          ActiveSupport::Deprecation.warn("You are using the order :as_defined which has been deprecated. Use :natural.")
+          order = :natural
+        end
         @order = order
       end
 
@@ -112,11 +116,7 @@ module ActiveEnum
       end
 
       def store
-        @store ||= storage_class.new(self, @order || :asc)
-      end
-
-      def storage_class
-        "ActiveEnum::Storage::#{ActiveEnum.storage.to_s.classify}Store".constantize
+        @store ||= ActiveEnum.storage_class.new(self, @order || :asc, ActiveEnum.storage_options)
       end
 
     end
