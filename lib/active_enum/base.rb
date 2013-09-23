@@ -17,6 +17,9 @@ module ActiveEnum
       #   value :id => 1, :name => 'Foo'
       #   value :name => 'Foo' # implicit id, incrementing from 1.
       #   value 1 => 'Foo'
+      # String ids:
+      #   value :id => 'FOO', :name => 'Foo'
+      #   value 'FOO' => 'Foo'
       #
       def value(enum_value)
         store.set *id_and_name_and_meta(enum_value)
@@ -52,10 +55,10 @@ module ActiveEnum
         store.values.map {|v| [v[1], v[0]] }
       end
 
-      # Access id or name value. Pass an id number to retrieve the name or
-      # a symbol or string to retrieve the matching id.
+      # Access id or name value. Pass an id number/string to retrieve the name or
+      # a symbol to retrieve the matching id.
       def get(index)
-        if index.is_a?(Fixnum)
+        if index.is_a?(Fixnum) || index.is_a?(String)
           row = store.get_by_id(index)
           row[1] if row
         else
@@ -71,7 +74,7 @@ module ActiveEnum
 
       # Access any meta data defined for a given id or name. Returns a hash.
       def meta(index)
-        row = if index.is_a?(Fixnum)
+        row = if index.is_a?(Fixnum) || index.is_a?(String)
           store.get_by_id(index)
         else
           store.get_by_name(index)
@@ -87,7 +90,7 @@ module ActiveEnum
           name = hash.delete(:name)
           meta = hash
           return id, name, (meta.empty? ? nil : meta)
-        elsif hash.keys.first.is_a?(Fixnum)
+        elsif hash.keys.first.is_a?(Fixnum) || hash.keys.first.is_a?(String)
           return *Array(hash).first
         else
           raise ActiveEnum::InvalidValue, "The value supplied, #{hash}, is not a valid format."
