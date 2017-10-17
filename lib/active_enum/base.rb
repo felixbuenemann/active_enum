@@ -58,7 +58,7 @@ module ActiveEnum
       # Access id or name value. Pass an id number/string to retrieve the name or
       # a symbol to retrieve the matching id.
       def get(index)
-        if index.is_a?(Fixnum) || index.is_a?(String)
+        if index.is_a?(Integer) || index.is_a?(String)
           row = store.get_by_id(index)
           row[1] if row
         else
@@ -74,7 +74,7 @@ module ActiveEnum
 
       # Access any meta data defined for a given id or name. Returns a hash.
       def meta(index)
-        row = if index.is_a?(Fixnum) || index.is_a?(String)
+        row = if index.is_a?(Integer) || index.is_a?(String)
           store.get_by_id(index)
         else
           store.get_by_name(index)
@@ -90,7 +90,7 @@ module ActiveEnum
           name = hash.delete(:name)
           meta = hash
           return id, name, (meta.empty? ? nil : meta)
-        elsif hash.keys.first.is_a?(Fixnum) || hash.keys.first.is_a?(String)
+        elsif hash.keys.first.is_a?(Integer) || hash.keys.first.is_a?(String)
           return *Array(hash).first
         else
           raise ActiveEnum::InvalidValue, "The value supplied, #{hash}, is not a valid format."
